@@ -152,7 +152,19 @@ function answerFor(raw){
  if(best) return best;
  return '<h2>🤔 I don’t know that one yet</h2><p>I only answer from my real tools, skills, and pricing — I won’t guess about anything else. But try asking it another way:</p><p>• “What is the Lead Form?”<br>• “How much does it cost?”<br>• “How do I install it?”<br>• “Why is it better for small businesses?”<br>• “Show me your tools”</p><p>Or <a href="https://pixametry-lab.vercel.app">ask on the live lab →</a></p>';
 }
-function ask(key,text){addUser(text||prompts[key]||key);typingThen(key&&answers[key]?answers[key]:answerFor(text||key));}
+async function askAI(userText){
+ const knowledge='Tanveer Ali, frontend SaaS developer in Karachi, Pakistan. Pixametry Lab: grounded mini-SaaS AI web components for small businesses. ONLY these 12 tools exist: AI Chat Widget, AI Lead Form, AI Smart Search, FAQ/AEO Widget, AI Review Wall, AI Quote Calculator, AI Product Finder Quiz, AI Voice Receptionist (demo), AI SEO Health Check, AI Backlink Tracker, Service Area Checker, Open-Now Checker. ONLY these prices: $59 one-time pack, hosted $19, $49 Best Value, $149 per month. Rules: answer from this knowledge only, never invent tools, prices, customers, reviews, emails or phone numbers. If you do not know, say so and suggest the Lead Rescue form on pixametry-lab.vercel.app. Contact only via pixametry-lab.vercel.app, its demo page, and its products page. Keep it friendly, 2-4 short sentences, no markdown headings.';
+ const prompt=knowledge+' User question: '+userText+' Answer:';
+ try{const ctrl=new AbortController();const t=setTimeout(()=>ctrl.abort(),20000);const r=await fetch('https://text.pollinations.ai/'+encodeURIComponent(prompt),{signal:ctrl.signal});clearTimeout(t);if(!r.ok) return null;let txt=(await r.text()).trim();if(txt.length<20||txt.length>2000) return null;const prices=txt.match(/\$\d+/g)||[];for(const p of prices){if(!['$59','$19','$49','$149'].includes(p)) return null;}return txt.replace(/</g,'&lt;').replace(/\n/g,'<br>');}catch(e){return null;}
+}
+async function ask(key,text){
+ const userText=text||prompts[key]||key;addUser(userText);
+ if(key&&answers[key]){typingThen(answers[key]);return;}
+ const typing=document.createElement('div');typing.className='typing';typing.textContent='🤖 Pixametry_Bot is thinking with real AI…';thread.appendChild(typing);
+ const ai=await askAI(userText);typing.remove();
+ if(ai){addBot('<p>'+ai+'</p><p><small>🤖 Real AI reply, grounded to Pixametry’s real tools and prices. Verify on <a href="https://pixametry-lab.vercel.app">pixametry-lab.vercel.app</a></small></p>');}
+ else{typingThen(answerFor(userText));}
+}
 document.querySelectorAll('.chips button').forEach(b=>b.addEventListener('click',()=>ask(b.dataset.q)));
 document.getElementById('form').addEventListener('submit',e=>{e.preventDefault();const v=document.getElementById('input').value.trim();if(!v)return;document.getElementById('input').value='';ask(null,v);});
 document.getElementById('home').addEventListener('click',welcome);
