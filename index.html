@@ -65,6 +65,7 @@ button.home{background:none;border:0;color:#2563eb;cursor:pointer;font-weight:70
       <button data-q="skills">🛠️ Skills</button>
       <button data-q="pricing">💰 Pricing</button>
       <button data-q="contact">✉️ Contact</button>
+      <button data-q="why">🏪 Why better?</button>
     </div>
     <form class="inputrow" id="form">
       <input id="input" type="text" placeholder="Ask me anything…" aria-label="Ask me anything" autocomplete="off">
@@ -99,14 +100,16 @@ skills:'<h2>🛠️ Skills</h2><p>The stack I actually ship with:</p><p><span cl
 pricing:'<h2>💰 Pricing</h2><p>No custom-quote fog. The site’s locked pricing:</p><p><span class="price">$59</span> one-time pack<br><br>Hosted: <b>$19 / <span class="best">$49 Best Value</span> / $149</b> per month</p><p>No fake tiers. No invented limits. Prices as shown on the live site.</p>',
 contact:'<h2>✉️ Let’s Work Together</h2><p>The fastest way to reach me is through the lab itself:</p><div class="links"><a href="https://pixametry-lab.vercel.app">🌐 Live lab — pixametry-lab.vercel.app</a><a href="https://pixametry-lab.vercel.app/demo">🧪 Live demos</a><a href="https://pixametry-lab.vercel.app/products">🛒 All 12 tools</a></div><p>💬 Say hello through the Lead Rescue form on the site — it actually reaches me. I don’t publish a mailbox that doesn’t exist.</p>'
 };
-const prompts={me:'Tell me about yourself',tools:'Show me your tools',skills:'What are your skills?',pricing:'What does it cost?',contact:'How can I contact you?'};
+const prompts={me:'Tell me about yourself',tools:'Show me your tools',skills:'What are your skills?',pricing:'What does it cost?',contact:'How can I contact you?',why:'How are your products better for small businesses?'};
 const thread=document.getElementById('thread');
 function addUser(t){const d=document.createElement('div');d.className='user';d.textContent=t;thread.appendChild(d);thread.scrollIntoView({block:'end'});}
 function addBot(html){const d=document.createElement('div');d.className='bot';d.innerHTML=html;thread.appendChild(d);d.scrollIntoView({block:'end'});}
 function typingThen(html){const d=document.createElement('div');d.className='typing';d.textContent='🤖 Pixametry_Bot is processing…';thread.appendChild(d);setTimeout(()=>{d.remove();addBot(html);},550);}
 function welcome(){thread.innerHTML='';addBot('<h2>🤖 Welcome to my AI-style portfolio</h2><p><span class="robot">BOT // ONLINE · GROUNDED MODE ON</span></p><p><b>How it works:</b> Instead of scrolling a long page, just ask. Tap <b>Me, Tools, Skills, Pricing or Contact</b> — or type your own question — and I’ll answer with my real tools and prices.</p><p>Try this: <b>“Show me your tools”</b> — or ask about a tool, like “What is the Lead Form?”</p>');}
+const whyHTML='<h2>🏪 Why Pixametry is better for small businesses</h2><p>Because it is built <b>for</b> a small business, not shrunk down from big-company software:</p><p><b>1. It answers from YOUR business — not the internet.</b> Hours, services, prices, and areas you entered. No guessing, no made-up answers.</p><p><b>2. A “don’t know” still makes you money.</b> Instead of a dead end, it saves the question to Gap Radar and takes the visitor’s details for a callback. That is Lead Rescue.</p><p><b>3. Small, not bloated.</b> One script tag, embedded in minutes. No big setup, no team needed, no months of onboarding.</p><p><b>4. Small-business pricing.</b> <b>$59</b> one-time pack, hosted <b>$19 / $49 Best Value / $149</b> a month — not enterprise pricing.</p><p><b>5. Honest by design.</b> No fake reviews, no fake stats, no sample data dressed as real customers. Demos are badged SAMPLE.</p><p><b>6. Works on the phone your customers actually use.</b> Mobile, tablet, and iOS first.</p><p>That is the difference: typical chatbots <i>sound</i> smart. Pixametry is <i>grounded</i> — and when it doesn’t know, it still captures the lead.</p><p><a href="https://pixametry-lab.vercel.app/demo">🧪 Try it live →</a></p>';
 function answerFor(q){
  q=q.toLowerCase();
+ if(q.includes('better')||q.includes('why')||q.includes('advantage')||q.includes('benefit')||q.includes('different')||q.includes('small business')||q.includes('small businesses')) return whyHTML;
  if(q.includes('tool')||q.includes('project')||q.includes('product')||q.includes('chat widget')||q.includes('lead')||q.includes('search')||q.includes('faq')||q.includes('review')||q.includes('quote')||q.includes('quiz')||q.includes('voice')||q.includes('seo')||q.includes('backlink')||q.includes('service area')||q.includes('open')) return toolsHTML;
  if(q.includes('price')||q.includes('cost')||q.includes('plan')||q.includes('$')) return answers.pricing;
  if(q.includes('skill')||q.includes('stack')||q.includes('react')||q.includes('next')||q.includes('tailwind')) return answers.skills;
