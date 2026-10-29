@@ -10,6 +10,11 @@
 .wrap{max-width:720px;margin:0 auto;padding:28px 16px 48px}
 .hero{text-align:center;padding:18px 8px 8px}
 .monogram{width:56px;height:56px;margin:0 auto 14px;background:#111;color:#fff;border-radius:14px;display:grid;place-items:center;font-weight:800;letter-spacing:1px}
+.photo{width:128px;height:128px;object-fit:cover;border-radius:50%;border:4px solid #fff;box-shadow:0 0 0 3px #2563eb,0 0 28px rgba(37,99,235,.5);margin:0 auto 12px;display:block}
+.robot{font-family:ui-monospace,Menlo,Consolas,monospace;letter-spacing:2px;font-size:12px;background:#111;color:#7dd3fc;border-radius:999px;padding:7px 13px;display:inline-block}
+.chat{border:1px solid #c7d8ff;box-shadow:0 10px 30px rgba(37,99,235,.18)}
+.bot{position:relative}
+.bot:before{content:"🤖 PIXAMETRY_BOT · ONLINE";display:block;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;letter-spacing:1.5px;color:#2563eb;margin-bottom:8px}
 .hero h1{font-size:clamp(34px,7vw,56px);line-height:1.02;margin:8px 0}
 .hero h1 span{color:#2563eb}
 .hero p{color:#555;font-size:17px;line-height:1.6;max-width:560px;margin:12px auto}
@@ -43,8 +48,9 @@ button.home{background:none;border:0;color:#2563eb;cursor:pointer;font-weight:70
 <body>
 <div class="wrap">
   <div class="hero">
-    <div class="monogram">PL</div>
-    <div>Hey, I'm Tanveer 👋</div>
+    <img class="photo" src="profile.jpg" alt="Tanveer Ali">
+    <div><span class="robot">🤖 PIXAMETRY_BOT // SYSTEM ONLINE</span></div>
+    <div style="margin-top:10px">Hey, I'm Tanveer 👋</div>
     <h1>Pixametry <span>Lab</span></h1>
     <p>Mini-SaaS for small business. Grounded AI. Embedded in minutes.<br>APIs · Chat · Leads · Search — Karachi, Pakistan</p>
     <span class="pill">● LIVE — 12 TOOLS</span>
@@ -97,8 +103,8 @@ const prompts={me:'Tell me about yourself',tools:'Show me your tools',skills:'Wh
 const thread=document.getElementById('thread');
 function addUser(t){const d=document.createElement('div');d.className='user';d.textContent=t;thread.appendChild(d);thread.scrollIntoView({block:'end'});}
 function addBot(html){const d=document.createElement('div');d.className='bot';d.innerHTML=html;thread.appendChild(d);d.scrollIntoView({block:'end'});}
-function typingThen(html){const d=document.createElement('div');d.className='typing';d.textContent='Pixametry is typing…';thread.appendChild(d);setTimeout(()=>{d.remove();addBot(html);},550);}
-function welcome(){thread.innerHTML='';addBot('<h2>Welcome to my AI-style portfolio 👋</h2><p><b>How it works:</b> Instead of scrolling a long page, just ask. Tap <b>Me, Tools, Skills, Pricing or Contact</b> — or type your own question — and I’ll answer with my real tools and prices.</p><p>Try this: <b>“Show me your tools”</b> — or ask about a tool, like “What is the Lead Form?”</p>');}
+function typingThen(html){const d=document.createElement('div');d.className='typing';d.textContent='🤖 Pixametry_Bot is processing…';thread.appendChild(d);setTimeout(()=>{d.remove();addBot(html);},550);}
+function welcome(){thread.innerHTML='';addBot('<h2>🤖 Welcome to my AI-style portfolio</h2><p><span class="robot">BOT // ONLINE · GROUNDED MODE ON</span></p><p><b>How it works:</b> Instead of scrolling a long page, just ask. Tap <b>Me, Tools, Skills, Pricing or Contact</b> — or type your own question — and I’ll answer with my real tools and prices.</p><p>Try this: <b>“Show me your tools”</b> — or ask about a tool, like “What is the Lead Form?”</p>');}
 function answerFor(q){
  q=q.toLowerCase();
  if(q.includes('tool')||q.includes('project')||q.includes('product')||q.includes('chat widget')||q.includes('lead')||q.includes('search')||q.includes('faq')||q.includes('review')||q.includes('quote')||q.includes('quiz')||q.includes('voice')||q.includes('seo')||q.includes('backlink')||q.includes('service area')||q.includes('open')) return toolsHTML;
