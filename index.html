@@ -13,6 +13,12 @@
 .photo{width:128px;height:128px;object-fit:cover;border-radius:50%;border:4px solid #fff;box-shadow:0 0 0 3px #2563eb,0 0 28px rgba(37,99,235,.5);margin:0 auto 12px;display:block}
 .robot{font-family:ui-monospace,Menlo,Consolas,monospace;letter-spacing:2px;font-size:12px;background:#111;color:#7dd3fc;border-radius:999px;padding:7px 13px;display:inline-block}
 .chat{border:1px solid #c7d8ff;box-shadow:0 10px 30px rgba(37,99,235,.18)}
+.workshop{max-width:520px;margin:16px auto 0;background:#111;color:#fff;border-radius:16px;padding:14px 16px;text-align:left;box-shadow:0 0 24px rgba(37,99,235,.35)}
+.workshop .botface{font-size:34px;animation:bob 2.2s ease-in-out infinite;display:inline-block}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.workshop .bar{height:10px;background:#333;border-radius:999px;overflow:hidden;margin:10px 0 6px}
+.workshop .bar div{height:100%;width:0%;background:#2563eb;border-radius:999px;transition:width .3s}
+.workshop small{color:#9ca3af;font-family:ui-monospace,Menlo,Consolas,monospace}
 .bot{position:relative}
 .bot:before{content:"🤖 PIXAMETRY_BOT · ONLINE";display:block;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;letter-spacing:1.5px;color:#2563eb;margin-bottom:8px}
 .hero h1{font-size:clamp(34px,7vw,56px);line-height:1.02;margin:8px 0}
@@ -55,6 +61,11 @@ button.home{background:none;border:0;color:#2563eb;cursor:pointer;font-weight:70
     <p>Mini-SaaS for small business. Grounded AI. Embedded in minutes.<br>APIs · Chat · Leads · Search — Karachi, Pakistan</p>
     <span class="pill">● LIVE — 12 TOOLS</span>
     <span class="pill light">React · Next.js · Tailwind</span>
+    <div class="workshop" aria-label="Bot at work">
+      <span class="botface">🤖</span> <b id="botTask">Building: AI Chat Widget…</b>
+      <div class="bar"><div id="botBar"></div></div>
+      <small><span id="botPct">0%</span> · BOT AT WORK · GROUNDED BUILD · NO GUESSES</small>
+    </div>
   </div>
 
   <div class="chat" role="main">
@@ -107,22 +118,46 @@ function addBot(html){const d=document.createElement('div');d.className='bot';d.
 function typingThen(html){const d=document.createElement('div');d.className='typing';d.textContent='🤖 Pixametry_Bot is processing…';thread.appendChild(d);setTimeout(()=>{d.remove();addBot(html);},550);}
 function welcome(){thread.innerHTML='';addBot('<h2>🤖 Welcome to my AI-style portfolio</h2><p><span class="robot">BOT // ONLINE · GROUNDED MODE ON</span></p><p><b>How it works:</b> Instead of scrolling a long page, just ask. Tap <b>Me, Tools, Skills, Pricing or Contact</b> — or type your own question — and I’ll answer with my real tools and prices.</p><p>Try this: <b>“Show me your tools”</b> — or ask about a tool, like “What is the Lead Form?”</p>');}
 const whyHTML='<h2>🏪 Why Pixametry is better for small businesses</h2><p>Because it is built <b>for</b> a small business, not shrunk down from big-company software:</p><p><b>1. It answers from YOUR business — not the internet.</b> Hours, services, prices, and areas you entered. No guessing, no made-up answers.</p><p><b>2. A “don’t know” still makes you money.</b> Instead of a dead end, it saves the question to Gap Radar and takes the visitor’s details for a callback. That is Lead Rescue.</p><p><b>3. Small, not bloated.</b> One script tag, embedded in minutes. No big setup, no team needed, no months of onboarding.</p><p><b>4. Small-business pricing.</b> <b>$59</b> one-time pack, hosted <b>$19 / $49 Best Value / $149</b> a month — not enterprise pricing.</p><p><b>5. Honest by design.</b> No fake reviews, no fake stats, no sample data dressed as real customers. Demos are badged SAMPLE.</p><p><b>6. Works on the phone your customers actually use.</b> Mobile, tablet, and iOS first.</p><p>That is the difference: typical chatbots <i>sound</i> smart. Pixametry is <i>grounded</i> — and when it doesn’t know, it still captures the lead.</p><p><a href="https://pixametry-lab.vercel.app/demo">🧪 Try it live →</a></p>';
-function answerFor(q){
- q=q.toLowerCase();
- if(q.includes('better')||q.includes('why')||q.includes('advantage')||q.includes('benefit')||q.includes('different')||q.includes('small business')||q.includes('small businesses')) return whyHTML;
- if(q.includes('tool')||q.includes('project')||q.includes('product')||q.includes('chat widget')||q.includes('lead')||q.includes('search')||q.includes('faq')||q.includes('review')||q.includes('quote')||q.includes('quiz')||q.includes('voice')||q.includes('seo')||q.includes('backlink')||q.includes('service area')||q.includes('open')) return toolsHTML;
- if(q.includes('price')||q.includes('cost')||q.includes('plan')||q.includes('$')) return answers.pricing;
- if(q.includes('skill')||q.includes('stack')||q.includes('react')||q.includes('next')||q.includes('tailwind')) return answers.skills;
- if(q.includes('contact')||q.includes('hire')||q.includes('email')||q.includes('hello')||q.includes('reach')) return answers.contact;
- if(q.includes('yourself')||q.includes('about')||q.includes('who are')||q.includes('tanveer')) return answers.me;
- if(q.includes('demo')||q.includes('try')||q.includes('live')) return '<h2>🧪 Try it live</h2><p>Don’t take my word for it — try it:</p><p><a href="https://pixametry-lab.vercel.app/demo">Live demos →</a><br><a href="https://pixametry-lab.vercel.app/products">All 12 tools →</a><br><a href="https://pixametry-lab.vercel.app">Live lab →</a></p>';
- if(q.includes('grounded')||q.includes('gap')||q.includes('don\'t know')||q.includes('know')) return '<h2>🤖 Grounded, or I say so</h2><p>If Pixametry doesn’t know an answer, it doesn’t guess. It says so, saves the question to <b>Gap Radar</b>, and takes the visitor’s details for a callback. That’s the whole niche.</p>';
- return '<h2>🤔 I don’t know that yet</h2><p>I only answer from my real tools, skills, and pricing — I won’t guess about anything else.</p><p>Try: <b>Me, Tools, Skills, Pricing,</b> or <b>Contact</b> — or <a href="https://pixametry-lab.vercel.app">ask on the live lab →</a></p>';
+function answerFor(raw){
+ const q=' '+raw.toLowerCase().replace(/[^a-z0-9 $]/g,' ')+' ';
+ const detail=(n,d)=>'<h2>🚀 '+n+'</h2><p>'+d+'</p><p><a href="https://pixametry-lab.vercel.app/demo">🧪 Try the live demos →</a> &nbsp; <a href="https://pixametry-lab.vercel.app/products">🛒 See all 12 tools →</a></p>';
+ const intents=[
+  {k:['better','advantage','benefit','why pixametry','why are','small business'],h:whyHTML},
+  {k:['lead form','lead rescue'],h:detail('AI Lead Form','Captures leads — and turns a “don’t know” into a rescued lead, not a lost visitor. When the bot doesn’t know, it saves the question to Gap Radar and takes details for a callback.')},
+  {k:['chat widget'],h:detail('AI Chat Widget','The front door for a website: answers visitors from the business’s own content, with citations — not from the open internet.')},
+  {k:['smart search'],h:detail('AI Smart Search','Search that actually answers, from your own site content — not just a list of links.')},
+  {k:['faq','aeo'],h:detail('FAQ / AEO Widget','Grounded FAQ answers, plus a Gap Radar log of every question visitors asked that wasn’t answered yet.')},
+  {k:['review wall','reviews'],h:detail('AI Review Wall','Real reviews, published even at 1 star, with owner replies. No cherry-picking.')},
+  {k:['quote calculator','quote'],h:detail('AI Quote Calculator','Instant quotes from your own pricing rules, with a line-by-line breakdown — not a guess.')},
+  {k:['quiz','product finder'],h:detail('AI Product Finder Quiz','“Which one is right for me?” answered in 3 questions, from your own product rules.')},
+  {k:['voice receptionist','voice'],h:detail('AI Voice Receptionist','Demo: a receptionist that knows when to take a callback, not guess. By-your-own-number model, not a public phone service.')},
+  {k:['seo health'],h:detail('AI SEO Health Check','A real health check for a site. The demo runs in sample mode, badged as sample.')},
+  {k:['backlink'],h:detail('AI Backlink Tracker','Verified links only, displayed cleanly. The demo runs in sample mode.')},
+  {k:['service area','coverage','covered'],h:detail('Service Area Checker','Covered / edge-of-area / not-covered — from owner-entered areas only. No fake coverage, zero network calls for the check.')},
+  {k:['open now','open-now','are you open','opening hours','hours'],h:detail('Open-Now Checker','“Are you open now?” from owner-entered weekly hours plus special dates and closures, with the next opening when closed.')},
+  {k:['how it works','install','embed','setup','how do i','get started'],h:'<h2>⚡ How it works</h2><p>3 steps, not 3 months:</p><p><b>1. EMBED</b> — one script tag on your site.<br><b>2. FEED</b> — your own content, hours, areas, and prices.<br><b>3. GO LIVE</b> — grounded answers, leads, and gaps from day one.</p><p><a href="https://pixametry-lab.vercel.app/demo">🧪 Try the live demos →</a></p>'},
+  {k:['price','cost','plan','pricing','$','cheap','expensive'],h:answers.pricing},
+  {k:['skill','stack','react','next','tailwind','technology','tech'],h:answers.skills},
+  {k:['contact','hire','reach','work together'],h:answers.contact},
+  {k:['yourself','about you','who are you','tanveer'],h:answers.me},
+  {k:['demo','try it','live demo','test'],h:'<h2>🧪 Try it live</h2><p>Don’t take my word for it — try it:</p><p><a href="https://pixametry-lab.vercel.app/demo">Live demos →</a><br><a href="https://pixametry-lab.vercel.app/products">All 12 tools →</a><br><a href="https://pixametry-lab.vercel.app">Live lab →</a></p>'},
+  {k:['grounded','gap radar','dont know','do not know','guess'],h:'<h2>🤖 Grounded, or I say so</h2><p>If Pixametry doesn’t know an answer, it doesn’t guess. It says so, saves the question to <b>Gap Radar</b>, and takes the visitor’s details for a callback. That’s the whole niche.</p>'},
+  {k:['hi','hello','hey','salam','good morning','good evening'],h:'<h2>👋 Hello!</h2><p>I’m Pixametry_Bot, Tanveer’s portfolio assistant. Ask me about <b>Me, Tools, Skills, Pricing, Contact</b> — or a specific tool, like “What is the Lead Form?” or “How much does it cost?”</p>'},
+  {k:['thank','thanks','great','nice','awesome'],h:'<h2>😊 You’re welcome!</h2><p>Want to see it in action? <a href="https://pixametry-lab.vercel.app/demo">Try the live demos →</a></p>'},
+  {k:['bye','goodbye','see you'],h:'<h2>👋 Goodbye!</h2><p>Thanks for stopping by. The live lab is always open: <a href="https://pixametry-lab.vercel.app">pixametry-lab.vercel.app →</a></p>'},
+  {k:['tool','project','product','all tools','list'],h:toolsHTML},
+ ];
+ let best=null,bs=0;
+ for(const it of intents){let s=0;for(const key of it.k){if(q.includes(' '+key+' ')||q.includes(' '+key)) s+=key.split(' ').length*2;} if(s>bs){bs=s;best=it.h;}}
+ if(best) return best;
+ return '<h2>🤔 I don’t know that one yet</h2><p>I only answer from my real tools, skills, and pricing — I won’t guess about anything else. But try asking it another way:</p><p>• “What is the Lead Form?”<br>• “How much does it cost?”<br>• “How do I install it?”<br>• “Why is it better for small businesses?”<br>• “Show me your tools”</p><p>Or <a href="https://pixametry-lab.vercel.app">ask on the live lab →</a></p>';
 }
 function ask(key,text){addUser(text||prompts[key]||key);typingThen(key&&answers[key]?answers[key]:answerFor(text||key));}
 document.querySelectorAll('.chips button').forEach(b=>b.addEventListener('click',()=>ask(b.dataset.q)));
 document.getElementById('form').addEventListener('submit',e=>{e.preventDefault();const v=document.getElementById('input').value.trim();if(!v)return;document.getElementById('input').value='';ask(null,v);});
 document.getElementById('home').addEventListener('click',welcome);
+// Working-bot animation: cycles through real products, building each one
+(function(){let ti=0,pct=0;const task=document.getElementById('botTask'),bar=document.getElementById('botBar'),pctEl=document.getElementById('botPct');if(!task)return;setInterval(()=>{pct+=Math.floor(Math.random()*12)+6;if(pct>=100){pct=100;task.textContent='Done: '+tools[ti][1]+' ✓ — next build starting…';bar.style.width='100%';pctEl.textContent='100%';setTimeout(()=>{ti=(ti+1)%tools.length;pct=0;task.textContent='Building: '+tools[ti][1]+'…';bar.style.width='0%';pctEl.textContent='0%';},900);}else{task.textContent='Building: '+tools[ti][1]+'…';bar.style.width=pct+'%';pctEl.textContent=pct+'%';}},350);})();
 welcome();
 </script>
 </body>
